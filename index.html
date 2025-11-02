@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>给 姜乐瑶 的神秘礼物 — 来自 子超</title>
+<style>
+:root{
+  --bg1:#fff6fb; --bg2:#f2f7ff; --accent:#ff6b9a; --accent2:#ffd6e0;
+  --card-radius:14px; --max-width:460px; --text:#222;
+}
+html,body{height:100%;margin:0;font-family:"PingFang SC","Helvetica Neue",Arial,"Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+body{
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(255,230,245,0.6), transparent 10%),
+              radial-gradient(1000px 500px at 90% 90%, rgba(230,245,255,0.6), transparent 10%),
+              linear-gradient(180deg,#fff7fb 0%,#f7f9ff 40%,#eef6ff 100%);
+  height:100vh; overflow:hidden; display:flex; align-items:center; justify-content:center; color:var(--text);
+}
+.card-wrap{
+  width:92%; max-width:var(--max-width); height:94vh;
+  background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.72));
+  border-radius:18px; box-shadow:0 18px 40px rgba(20,30,60,0.12);
+  position:relative; overflow:hidden; padding:18px; box-sizing:border-box; backdrop-filter:blur(4px);
+}
+header{display:flex; align-items:center; justify-content:space-between; gap:12px;}
+.title{font-weight:700; font-size:18px; display:flex; gap:10px; align-items:center;}
+.sub{color:#7d8795;font-size:13px;}
+.stars{position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:screen;opacity:0.9;}
+#hearts,#bubbles{position:absolute;inset:0;z-index:2;pointer-events:none;}
+#stage{position:relative;height:calc(100% - 110px);margin-top:8px;z-index:3;overflow:hidden;}
+.card{position:absolute; min-width:150px; max-width:300px; padding:12px 14px; border-radius:var(--card-radius);
+  box-shadow:0 10px 26px rgba(25,35,60,0.10);
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,255,0.96));
+  font-size:15px; color:var(--text); display:flex; gap:10px; align-items:center; transform-origin:center;
+  transition: transform 220ms ease, box-shadow 220ms ease; cursor:pointer; user-select:none;
+}
+.card:hover{transform:scale(1.08) rotate(2deg); box-shadow:0 14px 30px rgba(25,35,60,0.15);}
+.card .icon{width:34px; height:34px; border-radius:8px; display:grid; place-items:center; font-size:16px;
+  background: linear-gradient(135deg, rgba(255,107,154,0.12), rgba(255,214,224,0.12));
+}
+.card .txt{font-weight:600;line-height:1.35;}
+.v0{background: linear-gradient(180deg,#fff6f9,#fff9fb);}
+.v1{background: linear-gradient(180deg,#fff9f2,#fffdf6);}
+.v2{background: linear-gradient(180deg,#f8fbff,#fbfdff);}
+.v3{background: linear-gradient(180deg,#fff8ff,#fffafc);}
+.v4{background: linear-gradient(180deg,#f6fff8,#f9fff9);}
+@keyframes floatUp{0%{transform:translateY(110vh) rotate(0deg) scale(0.98);opacity:0;}8%{opacity:1;}100%{transform:translateY(-40vh) rotate(6deg) scale(1);opacity:1;}}
+.sign{position:absolute;left:18px;bottom:14px;font-size:13px;color:#6e7780;z-index:4;}
+.hint{position:absolute;left:50%;transform:translateX(-50%);top:50%;z-index:5;text-align:center;font-size:14px;color:#fff;}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.modal.active{opacity:1;pointer-events:auto;}
+.modal-content{background:#fff;padding:20px;border-radius:14px;max-width:90%;text-align:center;position:relative;box-shadow:0 10px 30px rgba(0,0,0,0.2);}
+.modal-close{position:absolute;top:10px;right:12px;cursor:pointer;font-size:18px;color:#999;}
+@media(max-width:480px){.card{min-width:140px;padding:10px;font-size:14px;}.title{font-size:16px;}.sign{font-size:12px;}}
+</style>
+</head>
+<body>
+<div class="card-wrap" id="wrap">
+<header>
+<div><div class="title">给 <span style="color:var(--accent)">姜乐瑶</span> 的小心意 ✨</div>
+<div class="sub">一份来自 子超 的温柔</div></div>
+<div style="font-size:13px;color:#9aa3ad">现在是个好时刻</div>
+</header>
+
+<svg class="stars" width="100%" height="100%" preserveAspectRatio="none" aria-hidden>
+  <defs><radialGradient id="g1"><stop offset="0" stop-color="#fff" stop-opacity="0.9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="12%" cy="20%" r="180" fill="url(#g1)" opacity="0.08"/>
+  <circle cx="86%" cy="78%" r="160" fill="url(#g1)" opacity="0.06"/>
+  <circle cx="60%" cy="18%" r="120" fill="url(#g1)" opacity="0.05"/>
+</svg>
+
+<canvas id="hearts"></canvas>
+<canvas id="bubbles"></canvas>
+<div id="stage" aria-live="polite"></div>
+<div class="sign">—— 来自 子超</div>
+<div class="hint" id="hint">点击屏幕体验互动</div>
+
+<!-- 弹窗 -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <span class="modal-close" id="modalClose">&times;</span>
+    <div id="modalText"></div>
+  </div>
+</div>
+
+<!-- 音乐（自动播放版） -->
+<audio id="bgm" loop autoplay preload="auto">
+  <!-- ⚠️ 请替换成你拥有版权的《不将就》mp3 文件路径或合法在线链接 -->
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const messages=["姜乐瑶，你超棒的✨","天冷了，多穿衣服❄️","期待下一次见面💕","学习顺利，天天开心📚","我想你啦💖","愿你每一天都被温柔包围🌈","吃好睡好，不要熬夜哦🌙","保持笑容，世界也会对你微笑😊","愿你遇见温柔的人与事🌸","给姜乐瑶：未来可期，一切顺利💫","晚风像信，也带着我的想念","你值得被温柔相待 — 子超送上祝福"];
+
+const stage=document.getElementById('stage');let created=0;
+function rand(min,max){return Math.random()*(max-min)+min;}
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
+function spawnCard(){
+  const card=document.createElement('div'); const v=created%5;
+  card.className='card v'+v; const w=Math.round(rand(150,280));
+  card.style.width=w+'px'; const left=rand(6,(document.getElementById('wrap').clientWidth-w-12));
+  card.style.left=left+'px'; const rot=rand(-7,7); card.style.transform=`rotate(${rot}deg)`;
+  const icon=document.createElement('div'); icon.className='icon'; icon.textContent='💌';
+  const txt=document.createElement('div'); txt.className='txt'; txt.textContent=pick(messages);
+  card.appendChild(icon); card.appendChild(txt);
+  const duration=rand(12,26); const delay=rand(-6,8);
+  card.style.animation=`floatUp ${duration}s linear ${delay}s forwards`; stage.appendChild(card); created++;
+  setTimeout(()=>{ card.remove(); }, (duration+Math.abs(delay))*1000);
+  card.addEventListener('click', ()=>{document.getElementById('modalText').textContent=txt.textContent+" —— 子超";document.getElementById('modal').classList.add('active');});
+}
+setInterval(spawnCard,1200);
+
+const canvas=document.getElementById('hearts'); const ctx=canvas.getContext('2d');
+let wC=canvas.width=window.innerWidth,hC=canvas.height=window.innerHeight;
+window.addEventListener('resize',()=>{wC=canvas.width=window.innerWidth;hC=canvas.height=window.innerHeight;});
+const heartsArr=[];
+function createHeart(){heartsArr.push({x:rand(0,wC),y:hC+20,size:rand(8,18),speed:rand(0.8,1.6),angle:rand(0,Math.PI*2),alpha:rand(0.4,0.9)});}
+function drawHearts(){ctx.clearRect(0,0,wC,hC);for(let i=0;i<heartsArr.length;i++){let p=heartsArr[i];p.y-=p.speed;p.x+=Math.sin(p.angle)*0.5;p.angle+=0.02;ctx.globalAlpha=p.alpha;ctx.fillStyle='#ff6b9a';ctx.beginPath();ctx.arc(p.x,p.y,p.size/2,0,Math.PI*2);ctx.fill();if(p.y+p.size<0){heartsArr.splice(i,1); i--;}}requestAnimationFrame(drawHearts);}
+setInterval(createHeart,300); drawHearts();
+
+const bubbleCanvas=document.getElementById('bubbles'); const bCtx=bubbleCanvas.getContext('2d');
+let wB=bubbleCanvas.width=window.innerWidth,hB=bubbleCanvas.height=window.innerHeight; const bubblesArr=[];
+function createBubble(){bubblesArr.push({x:rand(0,wB),y:hB+10,r:rand(4,10),speed:rand(0.5,1.2),alpha:rand(0.3,0.7)});}
+function drawBubbles(){bCtx.clearRect(0,0,wB,hB);for(let i=0;i<bubblesArr.length;i++){let b=bubblesArr[i];b.y-=b.speed;bCtx.globalAlpha=b.alpha;bCtx.fillStyle='rgba(255,200,220,0.6)';bCtx.beginPath();bCtx.arc(b.x,b.y,b.r,0,Math.PI*2);bCtx.fill();if(b.y+b.r<0){bubblesArr.splice(i,1); i--;}}requestAnimationFrame(drawBubbles);}
+setInterval(createBubble,400); drawBubbles();
+
+document.getElementById('modalClose').addEventListener('click',()=>{document.getElementById('modal').classList.remove('active');});
+const hint=document.getElementById('hint'); document.body.addEventListener('click',()=>{hint.style.display='none';},{once:true});
+
+</script>
+</body>
+</html>
